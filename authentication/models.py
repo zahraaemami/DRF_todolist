@@ -45,7 +45,7 @@ class UserManager(BaseUserManager) :
         extra_fields.setdefault('is_superuser' , False)
         return self._create_user( username , email , password, **extra_fields)
 
-    def create_super_user(self , email = None , password  = None , username , **extra_fields) :
+    def create_super_user(self, username,email = None , password  = None , **extra_fields) :
         
         extra_fields.setdefault('is_staff' , True)
         extra_fields.setdefault('is_superuser' , True)
@@ -68,7 +68,7 @@ class User (PermissionsMixin,AbstractBaseUser,BaseModel) :
     
     username_validator = UnicodeUsernameValidator()
     
-    username = models.models.CharField(
+    username = models.CharField(
         max_length=150,
         unique=True,
         help_text=_('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
@@ -78,10 +78,10 @@ class User (PermissionsMixin,AbstractBaseUser,BaseModel) :
         },
     )
     
-    email = models.models.EmailField( max_length=254 , unique = True)
+    email = models.EmailField( max_length=254 , unique = True)
     is_staff = models.BooleanField(default = False)
     is_active = models.BooleanField(default = True)
-    is_verified = models.models.BooleanField(default = False)
+    is_verified = models.BooleanField(default = False)
     date_joined = models.DateTimeField(default  = timezone.now)
     
     objects = UserManager()
