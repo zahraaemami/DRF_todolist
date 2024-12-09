@@ -45,10 +45,10 @@ class UserManager(BaseUserManager) :
         extra_fields.setdefault('is_superuser' , False)
         return self._create_user( username , email , password, **extra_fields)
 
-    def create_super_user(self, username,email = None , password  = None , **extra_fields) :
+    def create_superuser(self, username,email = None , password  = None , **extra_fields) :
         
         extra_fields.setdefault('is_staff' , True)
-        extra_fields.setdefault('is_superuser' , True)
+        extra_fields.setdefault('is_superuser' ,True)
         
         if extra_fields.get('is_staff') is not True :
          
@@ -58,7 +58,7 @@ class UserManager(BaseUserManager) :
            
             raise ValueError('Superuser must have is_super_user = True' )
         
-        return self._create_user(username , email , password , **extra_fieldas)
+        return self._create_user(username , email , password , **extra_fields)
     
         
         
@@ -95,8 +95,9 @@ class User (PermissionsMixin,AbstractBaseUser,BaseModel) :
         token = jwt.encode({
             "username" :self.username ,
             "email" : self.email ,
-            "exp" :datetime.atcnow() + timedelta(hourse = 23)
+            "exp" :datetime.utcnow() + timedelta(hours = 23)
             
         },settings.SECRET_KEY, algorithm='HS256')
         
         return token
+    
